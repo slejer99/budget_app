@@ -37,7 +37,7 @@ and go back to the workbook only to check something the extraction doesn't cover
 | `docs/spreadsheet/02-month-template.md` | Month sheet anatomy: row map, column map, complete formula vocabulary |
 | `docs/spreadsheet/03-caly-rok.md` | The yearly rollup, and why it is currently `#REF!` throughout |
 | `docs/spreadsheet/04-stan-kont.md` | Accounts & debts sheet — fully built, never filled in |
-| `docs/spreadsheet/05-data-inventory.md` | What data actually exists, per month |
+| `docs/spreadsheet/05-data-inventory.md` | What data actually exists, per month. **Not in git** — its tables are real monthly income and spend. On the operator's desktop only |
 | `docs/spreadsheet/data/*.csv` | Machine-readable: 165 categories, 653 planned figures, 59 actual entries. **Not in git** — real figures, and the repo is public. They sit on the operator's desktop only |
 | `docs/research/cross-platform-stack.md` | Stack and sync options, 71 primary-source citations. **Its recommendation was not the one chosen** — read the ADRs for what was |
 | `CONTEXT.md` | **The glossary.** The project's vocabulary; use these words, avoid the listed synonyms |
@@ -99,12 +99,24 @@ translate; line and group names are whatever the operator typed and are never tr
 Polish month names need CLDR **stand-alone** forms (`Styczeń 2026`, not `Stycznia 2026`),
 which matters because this app is almost entirely bare month labels.
 
-**Every user-facing string goes through the translation mechanism.** No exceptions, in any
-ticket. A string the app says in its own voice is added to the catalogue in
-`src/core/translations.ts` with both languages; the type system then refuses to build if one
-is missing. There is deliberately no "translate the app" ticket at the end to catch up.
-Operator-typed text — line names, group names, notes — never enters the catalogue and is
-shown exactly as typed.
+**Every user-facing string goes through the translation mechanism.** A string the app says
+in its own voice is added to the catalogue in `src/core/translations.ts` with both
+languages; the type system then refuses to build if one is missing. There is deliberately no
+"translate the app" ticket at the end to catch up.
+
+Three things sit outside that catalogue, each for a reason:
+
+- **Operator-typed text** — line names, group names, notes. Shown exactly as typed, in
+  whatever language the operator typed it, never translated.
+- **The name of each language on the switch** (`Polski`, `English`). Proper names, identical
+  in both languages; they live in `LANGUAGE_NAMES` in `src/core/language.ts`.
+- **The name the installed app carries** on the Start menu and the home screen, in
+  `public/manifest.webmanifest`. No browser can switch a manifest at runtime, so it is fixed
+  at `Budget` — close enough to `Budżet` to read in either language. The `<title>` in
+  `index.html` is only what shows in the fraction of a second before the app boots; the app
+  then replaces it with the translated name.
+
+Nothing else joins that list without the operator.
 
 **All logic lives in the budget core**, the pure module behind `src/core/index.ts`. It reads
 no clock, no file and no network, and renders nothing; the current date is passed in. Tests

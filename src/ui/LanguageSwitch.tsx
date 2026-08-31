@@ -1,11 +1,4 @@
-import { LANGUAGES, translate, type Language, type TranslationKey } from '../core'
-
-// Each language is offered under its own name, so the switch stays readable
-// whichever language the app currently happens to be in.
-const NAME_KEYS = {
-  pl: 'language.name.pl',
-  en: 'language.name.en',
-} as const satisfies Record<Language, TranslationKey>
+import { LANGUAGES, LANGUAGE_NAMES, translate, type Language } from '../core'
 
 type Props = {
   language: Language
@@ -24,7 +17,7 @@ export function LanguageSwitch({ language, onChoose }: Props) {
           aria-pressed={option === language}
           onClick={() => onChoose(option)}
         >
-          {translate(NAME_KEYS[option], language)}
+          {LANGUAGE_NAMES[option]}
         </button>
       ))}
     </div>

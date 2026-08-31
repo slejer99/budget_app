@@ -6,7 +6,7 @@
  *  current date is passed in. */
 
 export type { Language } from './language'
-export { LANGUAGES, defaultLanguage, parseLanguage } from './language'
+export { LANGUAGES, LANGUAGE_NAMES, defaultLanguage, parseLanguage } from './language'
 
 export type { TranslationKey } from './translations'
 export { translate } from './translations'

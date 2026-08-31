@@ -48,7 +48,7 @@ export function App({ today }: Props) {
 
         <div class="figure">
           <span class="figure__label">{translate('placeholder.sampleAmount', language)}</span>
-          <span class="figure__value">{formatAmount(SAMPLE_AMOUNT, language)}</span>
+          <span class="figure__value">{formatAmount(SAMPLE_AMOUNT)}</span>
         </div>
 
         <p class="explanation">{translate('placeholder.explanation', language)}</p>

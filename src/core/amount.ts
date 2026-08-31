@@ -1,5 +1,3 @@
-import type { Language } from './language'
-
 /** A quantity of money, always Swedish crowns.
  *
  *  Held as a whole number of öre rather than a decimal fraction of a crown, so
@@ -22,12 +20,11 @@ export function amountFromOre(ore: number): Amount {
 
 /** Writes an amount the way the operator's bank does: `1 234,00 kr`.
  *
- *  The interface language is accepted but deliberately unused. There is one
- *  currency and one format; a Polish reading of the app shows the same figures
- *  as an English one. The parameter is here so that call sites are uniform and
- *  so that this decision is visible at the one place someone would otherwise
- *  be tempted to localise it. */
-export function formatAmount(amount: Amount, _language: Language): string {
+ *  Takes no interface language, and that is the point. There is one currency
+ *  and one format, so a Polish reading of the app shows the same figures as an
+ *  English one — not because a test says so, but because there is no language
+ *  here to vary on. */
+export function formatAmount(amount: Amount): string {
   const ore = amount as number
   const sign = ore < 0 ? '-' : ''
   const magnitude = Math.abs(ore)

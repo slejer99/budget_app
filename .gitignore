@@ -7,6 +7,8 @@ coverage/
 # These files stay on the desktop; the ticket-03 importer reads them from here.
 Kopia 63-Szablon-budzet-domowy-2021-PLN-v7-4.xlsx
 docs/spreadsheet/data/
+# Reads as structure notes, but holds 26 months of real income and total spend.
+docs/spreadsheet/05-data-inventory.md
 
 # Editor and OS noise
 .DS_Store
