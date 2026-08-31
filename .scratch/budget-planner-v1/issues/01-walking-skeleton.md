@@ -9,16 +9,54 @@ are the risky parts, not the placeholder.
 
 **Blocked by:** None — can start immediately.
 
-**Status:** ready-for-agent
+**Status:** ready-for-human
 
-- [ ] Builds with Node pinned to one LTS version, with the exact version recorded in the repo
+- [x] Builds with Node pinned to one LTS version, with the exact version recorded in the repo
 - [ ] Published as static files to GitHub Pages from a public repository
 - [ ] Installs to the Windows Start menu from Edge or Chrome and opens in its own window
 - [ ] Installs to the Android home screen and opens as an app
-- [ ] Works in portrait on a phone with no horizontal scrolling
-- [ ] Interface language switch offers Polish and English and takes effect immediately
-- [ ] Language choice persists across restarts, stored in the browser for now — ticket 02 moves it into the budget document
-- [ ] Polish month labels use CLDR stand-alone forms: `Styczeń 2026`, never `Stycznia 2026`
-- [ ] Amounts render as `1 234,00 kr`, with U+00A0 as the grouping separator and before `kr`, identically in both languages
-- [ ] A plain-language Node maintenance page exists in the repo: how to install it, the exact version, how to rebuild the app, and what to do when a rebuild fails — written for someone who does not code
-- [ ] Every user-facing string goes through the translation mechanism from this ticket onward. This is a standing rule for all later tickets; there is deliberately no "translate the app" ticket at the end
+- [x] Works in portrait on a phone with no horizontal scrolling
+- [x] Interface language switch offers Polish and English and takes effect immediately
+- [x] Language choice persists across restarts, stored in the browser for now — ticket 02 moves it into the budget document
+- [x] Polish month labels use CLDR stand-alone forms: `Styczeń 2026`, never `Stycznia 2026`
+- [x] Amounts render as `1 234,00 kr`, with U+00A0 as the grouping separator and before `kr`, identically in both languages
+- [x] A plain-language Node maintenance page exists in the repo: how to install it, the exact version, how to rebuild the app, and what to do when a rebuild fails — written for someone who does not code
+- [x] Every user-facing string goes through the translation mechanism from this ticket onward. This is a standing rule for all later tickets; there is deliberately no "translate the app" ticket at the end
+
+## Comments
+
+**2026-08-31 — built, reviewed, pushed. Three boxes left, all needing the operator.**
+
+Done and verified:
+
+- **Node is pinned to 24.19.0** in `.nvmrc`, and GitHub's build machine read it from
+  there — its log says `node: v24.19.0`. `package.json` allows `>=24.19.0 <25` so a patch
+  release does not break a rebuild on the desktop.
+- **Portrait, no sideways scrolling** — measured at 320, 360 and 412 CSS pixels in Chrome;
+  the page's scroll width equals its visible width at all three, so nothing overflows.
+  Worth a glance on the real phone when installing, but the layout has no fixed widths in it.
+- **The language switch** takes effect immediately (heading, labels, month name, the page's
+  own language attribute and its title), and survives a reload through browser storage.
+- **`Sierpień 2026`, not `Sierpnia 2026`.** All twenty-four month names are baked in rather
+  than taken from the browser's locale data, which varies by ICU version. Tested, all twelve
+  of each.
+- **`1 234,00 kr`** — read back out of the live page, both spaces confirmed as U+00A0 by
+  code point, not by eye.
+- **The Node maintenance page** is `docs/maintaining-node.md`.
+- **Translation:** every string the app says is a catalogue entry, and the type system
+  refuses a build if a language is missing. Three things sit outside it on purpose and
+  `CLAUDE.md` now names them: operator-typed text, the language names on the switch, and the
+  name the installed app carries — no browser can switch a manifest at runtime.
+
+Left, in order:
+
+1. **Turn GitHub Pages on.** Settings → Pages → Build and deployment → Source: **GitHub
+   Actions**. The build already passes on GitHub; only the publishing step fails, with
+   GitHub's own message saying Pages is not enabled. Nothing in the repo needs changing.
+2. **Install on Windows**, then **install on Android**, from
+   <https://slejer99.github.io/budget_app/>.
+
+Also done here, beyond the checklist: the workbook, the three extracted CSVs and
+`05-data-inventory.md` were removed from git and from its history before the first push,
+because the repository is public and ADR-0001 says the operator's financial data never
+reaches the host. They remain on the desktop, so the ticket-03 importer still has them.
