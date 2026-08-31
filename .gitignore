@@ -1,0 +1,15 @@
+# Build output and dependencies
+node_modules/
+dist/
+coverage/
+
+# The operator's financial data never reaches GitHub — see ADR-0001.
+# These files stay on the desktop; the ticket-03 importer reads them from here.
+Kopia 63-Szablon-budzet-domowy-2021-PLN-v7-4.xlsx
+docs/spreadsheet/data/
+
+# Editor and OS noise
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

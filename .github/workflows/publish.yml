@@ -1,0 +1,58 @@
+# Builds the app and publishes it to GitHub Pages, on every push to main.
+#
+# For this to run, GitHub Pages has to be set to build from GitHub Actions:
+# Settings -> Pages -> Build and deployment -> Source: GitHub Actions.
+#
+# Nothing here needs a password, a key or an account. If it ever stops working,
+# docs/maintaining-node.md says what to do.
+
+name: Publish
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One publish at a time. A queued run waits rather than cancelling the one
+# already going out.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      # The version comes from .nvmrc, so this file and the desktop always
+      # build with the same Node.
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+
+      # A broken app must not reach the phone, so the tests run before the build.
+      - run: npm test
+      - run: npm run build
+
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: dist
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5

@@ -1,0 +1,6 @@
+# One line-ending convention everywhere, so the desktop and the Linux machine
+# that publishes the app read every file the same way.
+* text=auto eol=lf
+
+*.png binary
+*.xlsx binary

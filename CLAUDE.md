@@ -5,9 +5,11 @@ Android phone. It replaces the household budget spreadsheet
 `Kopia 63-Szablon-budzet-domowy-2021-PLN-v7-4.xlsx` kept at the repo root (the Polish
 jakoszczedzacpieniadze.pl v7.4 template, heavily customised).
 
-**No code yet, but the design is settled.** As of 2026-08-26 the stack, the sync mechanism,
-the data model and the scope have all been decided in a grilling session — see `CONTEXT.md`
-and `docs/adr/`. Still to come: the spec and the tickets.
+**The design is settled and the walking skeleton is built.** As of 2026-08-26 the stack,
+the sync mechanism, the data model and the scope were all decided in a grilling session —
+see `CONTEXT.md` and `docs/adr/`. Ticket 01 landed on 2026-08-31: the app builds, installs
+and formats months and amounts, but holds no budget yet. Work continues through the tickets
+in `.scratch/budget-planner-v1/issues/`, in order.
 
 ## How to end every response
 
@@ -36,11 +38,12 @@ and go back to the workbook only to check something the extraction doesn't cover
 | `docs/spreadsheet/03-caly-rok.md` | The yearly rollup, and why it is currently `#REF!` throughout |
 | `docs/spreadsheet/04-stan-kont.md` | Accounts & debts sheet — fully built, never filled in |
 | `docs/spreadsheet/05-data-inventory.md` | What data actually exists, per month |
-| `docs/spreadsheet/data/*.csv` | Machine-readable: 165 categories, 653 planned figures, 59 actual entries |
+| `docs/spreadsheet/data/*.csv` | Machine-readable: 165 categories, 653 planned figures, 59 actual entries. **Not in git** — real figures, and the repo is public. They sit on the operator's desktop only |
 | `docs/research/cross-platform-stack.md` | Stack and sync options, 71 primary-source citations. **Its recommendation was not the one chosen** — read the ADRs for what was |
 | `CONTEXT.md` | **The glossary.** The project's vocabulary; use these words, avoid the listed synonyms |
 | `docs/adr/0001-web-app-with-build-step.md` | Why a built web app rather than Tauri or a no-build page |
 | `docs/adr/0002-one-json-file-in-google-drive.md` | Why one JSON file in Drive rather than a database or a sync service |
+| `docs/maintaining-node.md` | Written for the operator, not for you. Keep it true when the build changes |
 
 ## The three facts that change most decisions
 
@@ -95,6 +98,18 @@ grouping separator and before `kr`. One currency throughout — no PLN, no excha
 translate; line and group names are whatever the operator typed and are never translated.
 Polish month names need CLDR **stand-alone** forms (`Styczeń 2026`, not `Stycznia 2026`),
 which matters because this app is almost entirely bare month labels.
+
+**Every user-facing string goes through the translation mechanism.** No exceptions, in any
+ticket. A string the app says in its own voice is added to the catalogue in
+`src/core/translations.ts` with both languages; the type system then refuses to build if one
+is missing. There is deliberately no "translate the app" ticket at the end to catch up.
+Operator-typed text — line names, group names, notes — never enters the catalogue and is
+shown exactly as typed.
+
+**All logic lives in the budget core**, the pure module behind `src/core/index.ts`. It reads
+no clock, no file and no network, and renders nothing; the current date is passed in. Tests
+reach it only through that one file. Everything else — storage, rendering — is a thin adapter
+kept dull enough that not testing it is defensible.
 
 ## Agent skills
 

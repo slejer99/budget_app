@@ -1,0 +1,27 @@
+{
+  "name": "budget-app",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "A personal monthly budget planner for one operator, on a Windows desktop and an Android phone.",
+  "engines": {
+    "node": ">=24.19.0 <25.0.0"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "icons": "node scripts/make-icons.mjs"
+  },
+  "dependencies": {
+    "preact": "^10.27.2"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "vite": "^7.1.7",
+    "vitest": "^3.2.4"
+  }
+}
