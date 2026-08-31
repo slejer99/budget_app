@@ -12,7 +12,7 @@ are the risky parts, not the placeholder.
 **Status:** ready-for-human
 
 - [x] Builds with Node pinned to one LTS version, with the exact version recorded in the repo
-- [ ] Published as static files to GitHub Pages from a public repository
+- [x] Published as static files to GitHub Pages from a public repository
 - [ ] Installs to the Windows Start menu from Edge or Chrome and opens in its own window
 - [ ] Installs to the Android home screen and opens as an app
 - [x] Works in portrait on a phone with no horizontal scrolling
@@ -50,11 +50,17 @@ Done and verified:
 
 Left, in order:
 
-1. **Turn GitHub Pages on.** Settings → Pages → Build and deployment → Source: **GitHub
-   Actions**. The build already passes on GitHub; only the publishing step fails, with
-   GitHub's own message saying Pages is not enabled. Nothing in the repo needs changing.
-2. **Install on Windows**, then **install on Android**, from
+1. **Install on Windows**, then **install on Android**, from
    <https://slejer99.github.io/budget_app/>.
+
+**2026-08-31, later — it is live.** The operator set Pages to build from GitHub Actions and
+the run went green: Node 24.19.0 from `.nvmrc`, fifteen tests, a clean build, published.
+<https://slejer99.github.io/budget_app/> serves the page, the manifest (as
+`application/manifest+json`, which is what makes it installable), the service worker, all
+three icons and both hashed build files. The service worker, the manifest and the caching
+were checked in Chrome against this same build before it went out.
+
+Only the two installs are left, and they need hands on each device.
 
 Also done here, beyond the checklist: the workbook, the three extracted CSVs and
 `05-data-inventory.md` were removed from git and from its history before the first push,
