@@ -29,9 +29,9 @@ export function defaultLanguage(preferred: readonly string[]): Language {
   return 'en'
 }
 
-/** Reads a language back out of somewhere untrusted — browser storage now, the
- *  budget document from ticket 02 on. Anything unrecognised is refused rather
- *  than guessed at, so a corrupted value falls back to the default. */
+/** Reads a language back out of somewhere untrusted — the budget document.
+ *  Anything unrecognised is refused rather than guessed at, so a document
+ *  naming a language this build does not speak still opens, in the default. */
 export function parseLanguage(value: unknown): Language | undefined {
   return LANGUAGES.find((language) => language === value)
 }

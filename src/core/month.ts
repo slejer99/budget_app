@@ -15,6 +15,29 @@ export function monthOf(date: Date): Month {
   return { year: date.getFullYear(), month: date.getMonth() + 1 }
 }
 
+/** The month before this one, rolling the year over at January. */
+export function monthBefore(month: Month): Month {
+  return month.month === 1
+    ? { year: month.year - 1, month: 12 }
+    : { year: month.year, month: month.month - 1 }
+}
+
+/** The month after this one, rolling the year over at December. */
+export function monthAfter(month: Month): Month {
+  return month.month === 12
+    ? { year: month.year + 1, month: 1 }
+    : { year: month.year, month: month.month + 1 }
+}
+
+/** How a month is named inside the document: `2026-09`.
+ *
+ *  Zero-padded so that the keys of a document sort as dates do, which is what
+ *  makes "the months either side of this one" a matter of sorting rather than
+ *  arithmetic. */
+export function monthKey(month: Month): string {
+  return `${String(month.year).padStart(4, '0')}-${String(month.month).padStart(2, '0')}`
+}
+
 /** `Styczeń 2026`, `January 2026`. */
 export function formatMonthLabel(month: Month, language: Language): string {
   const name = monthName(month.month, language)

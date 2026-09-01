@@ -1,15 +1,25 @@
-import { defaultLanguage, parseLanguage, type Language } from '../core'
+import { parseLanguage, type Language } from '../core'
 
-/** Where the interface language is kept between visits.
+/** Where an explicitly chosen interface language survives a restart.
  *
- *  The browser is a temporary home for it. Ticket 02 moves the choice into the
- *  budget document, so that setting it on the desktop also sets it on the
- *  phone. Nothing here decides anything — which language to fall back to and
- *  what counts as a valid stored value are both the core's calls. */
+ *  This ticket moved the language into the budget document, which is now where
+ *  it is read from — but the app cannot write yet, so a choice made on the
+ *  switch has nowhere durable to go. Deleting this file outright would have
+ *  taken away something ticket 01 shipped: the operator sets the language once
+ *  and it stays set. So the browser keeps the choice, and the document supplies
+ *  it for any device that has never been told otherwise.
+ *
+ *  **Ticket 04 removes this.** Once the app can save, the switch writes into the
+ *  document and the document becomes the only home the language has. Until then
+ *  a remembered choice deliberately outranks the document, because silently
+ *  undoing something the operator just did is the worse of the two failures.
+ *
+ *  Nothing here decides anything: what counts as a valid stored value is the
+ *  core's call. */
 const STORAGE_KEY = 'budget_app.language'
 
-export function rememberedLanguage(): Language {
-  return parseLanguage(readStored()) ?? defaultLanguage(navigator.languages)
+export function rememberedLanguage(): Language | undefined {
+  return parseLanguage(readStored())
 }
 
 export function rememberLanguage(language: Language): void {

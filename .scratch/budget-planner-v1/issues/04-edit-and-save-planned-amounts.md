@@ -12,6 +12,9 @@ instalments and leaves the working visible. A plain number field would throw tha
 
 **Status:** ready-for-agent
 
+- [ ] The interface language is saved into the budget document, and the copy kept in browser
+      storage is removed — ticket 02 moved the *reading* of it into the document but could not
+      write, so until this lands a language chosen on one device does not reach the other
 - [ ] A line's planned amount is editable directly on the line
 - [ ] Plain numbers are accepted
 - [ ] Arithmetic is accepted — `4912+1667+1667` displays as `8 246,00 kr`

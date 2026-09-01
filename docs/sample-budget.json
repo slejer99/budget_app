@@ -1,0 +1,80 @@
+{
+  "_note": "A hand-made budget file for checking that the app opens a document on both devices. The structure is the operator's; every figure in it is invented. Real money never enters this repository.",
+  "version": 1,
+  "language": "pl",
+  "groups": [
+    { "id": "g-income", "name": "Przychody", "kind": "income" },
+    { "id": "g-food", "name": "Jedzenie", "kind": "expense" },
+    { "id": "g-home", "name": "Mieszkanie / dom", "kind": "expense" },
+    { "id": "g-transport", "name": "Transport", "kind": "expense" },
+    { "id": "g-debt", "name": "Spłata długów", "kind": "expense" },
+    { "id": "g-fun", "name": "Rozrywka", "kind": "expense" }
+  ],
+  "lines": [
+    { "id": "l-salary", "groupId": "g-income", "name": "Wynagrodzenie" },
+    { "id": "l-salary-partner", "groupId": "g-income", "name": "Wynagrodzenie Partnera / Partnerki" },
+    { "id": "l-akasa", "groupId": "g-income", "name": "akasa" },
+    { "id": "l-bonus", "groupId": "g-income", "name": "Premia" },
+
+    { "id": "l-food-home", "groupId": "g-food", "name": "Jedzenie dom" },
+    { "id": "l-food-town", "groupId": "g-food", "name": "Jedzenie miasto" },
+    { "id": "l-food-work", "groupId": "g-food", "name": "Jedzenie praca" },
+    { "id": "l-food-other", "groupId": "g-food", "name": "Inne" },
+
+    { "id": "l-rent", "groupId": "g-home", "name": "Czynsz" },
+    { "id": "l-power", "groupId": "g-home", "name": "Prąd" },
+    { "id": "l-heating", "groupId": "g-home", "name": "Ogrzewanie" },
+    { "id": "l-home-other", "groupId": "g-home", "name": "Inne" },
+
+    { "id": "l-fuel", "groupId": "g-transport", "name": "Paliwo do auta" },
+    { "id": "l-car", "groupId": "g-transport", "name": "auto" },
+    { "id": "l-transit", "groupId": "g-transport", "name": "Bilet komunikacji miejskiej" },
+    { "id": "l-transport-other", "groupId": "g-transport", "name": "Inne" },
+
+    { "id": "l-sbab", "groupId": "g-debt", "name": "sbab" },
+    { "id": "l-pko", "groupId": "g-debt", "name": "pko" },
+    { "id": "l-debt-other", "groupId": "g-debt", "name": "Inne" },
+
+    { "id": "l-spotify", "groupId": "g-fun", "name": "spotify" },
+    { "id": "l-tablet", "groupId": "g-fun", "name": "tablet" },
+    { "id": "l-fun-other", "groupId": "g-fun", "name": "Inne" }
+  ],
+  "months": {
+    "2026-09": {
+      "entries": {
+        "l-salary": { "planned": { "ore": 2800000 } },
+        "l-salary-partner": { "planned": { "ore": 2200000 } },
+        "l-akasa": { "planned": { "ore": 950000 } },
+
+        "l-food-home": { "planned": { "ore": 600000 }, "note": "w tym urodziny" },
+        "l-food-town": { "planned": { "ore": 150000 } },
+        "l-food-work": { "planned": { "ore": 90000 } },
+
+        "l-rent": { "planned": { "ore": 1250000 } },
+        "l-power": { "planned": { "ore": 78000 } },
+        "l-heating": { "planned": { "ore": 42000 } },
+
+        "l-fuel": { "planned": { "ore": 180000 } },
+        "l-car": { "planned": { "ore": 824600, "typed": "4912+1667+1667" } },
+        "l-transit": { "planned": { "ore": 62000 } },
+
+        "l-sbab": { "planned": { "ore": 1105600, "typed": "2548+2554+2554+3400" } },
+        "l-pko": { "planned": { "ore": 320000 } },
+
+        "l-spotify": { "planned": { "ore": 11900 } },
+        "l-tablet": { "planned": { "ore": 29900 } }
+      }
+    },
+    "2026-08": {
+      "entries": {
+        "l-salary": { "planned": { "ore": 2800000 } },
+        "l-salary-partner": { "planned": { "ore": 2200000 } },
+        "l-food-home": { "planned": { "ore": 550000 } },
+        "l-rent": { "planned": { "ore": 1250000 } },
+        "l-car": { "planned": { "ore": 824600, "typed": "4912+1667+1667" } },
+        "l-sbab": { "planned": { "ore": 1104000 } },
+        "l-spotify": { "planned": { "ore": 11900 } }
+      }
+    }
+  }
+}

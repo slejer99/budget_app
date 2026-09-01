@@ -11,12 +11,47 @@ const TRANSLATIONS = {
 
   'language.label': { pl: 'Język interfejsu', en: 'Interface language' },
 
-  'placeholder.thisMonth': { pl: 'Bieżący miesiąc', en: 'This month' },
-  'placeholder.sampleAmount': { pl: 'Przykładowa kwota', en: 'Sample amount' },
-  'placeholder.explanation': {
-    pl: 'Nie wczytano jeszcze żadnego budżetu. Ten ekran istnieje po to, aby potwierdzić, że aplikacja instaluje się na obu urządzeniach i poprawnie zapisuje miesiące oraz kwoty.',
-    en: 'No budget is loaded yet. This screen exists to prove the app installs on both devices and writes months and amounts correctly.',
+  'file.title': { pl: 'Otwórz swój budżet', en: 'Open your budget' },
+  'file.choose': { pl: 'Wybierz plik', en: 'Choose file' },
+  'file.change': { pl: 'Zmień plik', en: 'Change file' },
+  'file.why': {
+    pl: 'Przeglądarka nie zapamiętuje dostępu do pliku, więc wskazujesz go przy każdym otwarciu aplikacji. To zwykły krok, a nie błąd.',
+    en: 'The browser does not remember access to the file, so you point to it each time the app opens. This is an ordinary step, not an error.',
   },
+  'file.problem.notABudgetFile': {
+    pl: 'To nie jest plik budżetu. Wybierz inny plik.',
+    en: 'That is not a budget file. Choose a different one.',
+  },
+  'file.problem.unsupportedVersion': {
+    pl: 'Ten plik pochodzi z nowszej wersji aplikacji. Zaktualizuj aplikację, aby go otworzyć.',
+    en: 'This file comes from a newer version of the app. Update the app to open it.',
+  },
+  'file.problem.couldNotRead': {
+    pl: 'Nie udało się odczytać tego pliku. Jeśli jest na Dysku Google, poczekaj, aż się pobierze, i spróbuj ponownie.',
+    en: 'That file could not be read. If it is in Google Drive, wait for it to download and try again.',
+  },
+  // Shown by the operating system's own file picker as the file-type filter.
+  'file.type': { pl: 'Plik budżetu (JSON)', en: 'Budget file (JSON)' },
+  'file.open': { pl: 'Otwarty plik', en: 'Currently open' },
+
+  'month.totalIncome': { pl: 'Planowane przychody', en: 'Planned income' },
+  'month.totalExpenses': { pl: 'Planowane wydatki', en: 'Planned expenses' },
+  'month.unallocated': { pl: 'Nierozdysponowane', en: 'Unallocated' },
+  'month.notPlanned': {
+    pl: 'Ten miesiąc nie ma jeszcze planu.',
+    en: 'This month has no plan yet.',
+  },
+  'month.showUnplanned': {
+    pl: 'Pokaż pozycje bez kwoty',
+    en: 'Show lines with no amount',
+  },
+  'month.hideUnplanned': {
+    pl: 'Ukryj pozycje bez kwoty',
+    en: 'Hide lines with no amount',
+  },
+  'month.note': { pl: 'Notatka', en: 'Note' },
+  'month.previous': { pl: 'Poprzedni miesiąc', en: 'Previous month' },
+  'month.next': { pl: 'Następny miesiąc', en: 'Next month' },
 } as const satisfies Record<string, Record<Language, string>>
 
 /** The name of a string the app can say. */

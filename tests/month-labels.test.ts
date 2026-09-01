@@ -1,11 +1,35 @@
 import { describe, expect, it } from 'vitest'
 
-import { formatMonthLabel, monthOf } from '../src/core'
+import { formatMonthLabel, monthAfter, monthBefore, monthKey, monthOf } from '../src/core'
 
 describe('labelling a month', () => {
-  it('names a Polish month in its stand-alone form, never its genitive', () => {
-    expect(formatMonthLabel({ year: 2026, month: 1 }, 'pl')).toBe('Styczeń 2026')
-    expect(formatMonthLabel({ year: 2026, month: 1 }, 'pl')).not.toBe('Stycznia 2026')
+  // The genitive is what a Polish date reads as inside a full date — `1 stycznia
+  // 2026` — and what most locale data hands back. A bare month label needs the
+  // stand-alone form. Listing every genitive is what makes this able to fail:
+  // asserting the stand-alone form and then that it is not the genitive of the
+  // same month says the same thing twice.
+  const GENITIVES = [
+    'stycznia',
+    'lutego',
+    'marca',
+    'kwietnia',
+    'maja',
+    'czerwca',
+    'lipca',
+    'sierpnia',
+    'września',
+    'października',
+    'listopada',
+    'grudnia',
+  ]
+
+  it('never names a Polish month in its genitive form', () => {
+    for (let month = 1; month <= 12; month += 1) {
+      const label = formatMonthLabel({ year: 2026, month }, 'pl').toLowerCase()
+      for (const genitive of GENITIVES) {
+        expect(label, `${label} contains ${genitive}`).not.toContain(genitive)
+      }
+    }
   })
 
   // The app is almost entirely bare month labels, so every one of the twelve is
@@ -60,5 +84,35 @@ describe('the month a date falls in', () => {
   it('comes from the date it is given, not from a clock', () => {
     expect(monthOf(new Date(2026, 7, 31))).toEqual({ year: 2026, month: 8 })
     expect(monthOf(new Date(2024, 10, 1))).toEqual({ year: 2024, month: 11 })
+  })
+})
+
+describe('stepping between months', () => {
+  it('moves within a year', () => {
+    expect(monthBefore({ year: 2026, month: 9 })).toEqual({ year: 2026, month: 8 })
+    expect(monthAfter({ year: 2026, month: 9 })).toEqual({ year: 2026, month: 10 })
+  })
+
+  it('rolls the year over at January and December', () => {
+    expect(monthBefore({ year: 2026, month: 1 })).toEqual({ year: 2025, month: 12 })
+    expect(monthAfter({ year: 2026, month: 12 })).toEqual({ year: 2027, month: 1 })
+  })
+
+  it('comes back where it started after a step each way', () => {
+    for (const month of [1, 6, 12]) {
+      const start = { year: 2026, month }
+      expect(monthAfter(monthBefore(start))).toEqual(start)
+      expect(monthBefore(monthAfter(start))).toEqual(start)
+    }
+  })
+})
+
+describe('naming a month inside the document', () => {
+  it('zero-pads, so the keys of a document sort as dates do', () => {
+    expect(monthKey({ year: 2026, month: 9 })).toBe('2026-09')
+    expect(monthKey({ year: 2026, month: 12 })).toBe('2026-12')
+    expect([monthKey({ year: 2026, month: 10 }), monthKey({ year: 2026, month: 9 })].sort()).toEqual(
+      ['2026-09', '2026-10'],
+    )
   })
 })

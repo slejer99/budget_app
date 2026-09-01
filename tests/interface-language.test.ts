@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { LANGUAGES, defaultLanguage, parseLanguage, translate } from '../src/core'
+import { defaultLanguage, parseLanguage, translate } from '../src/core'
 
 describe("the app's own words", () => {
   it('gives back the string for the language asked for', () => {
@@ -8,9 +8,26 @@ describe("the app's own words", () => {
     expect(translate('app.name', 'pl')).toBe('Budżet')
   })
 
-  it('has something to say in every language it offers', () => {
-    for (const language of LANGUAGES) {
-      expect(translate('placeholder.explanation', language)).not.toBe('')
+  // A missing language is already a compile error, so asserting a string is
+  // non-empty proves nothing. What the type system cannot catch is English
+  // pasted into the Polish column, which is what this looks for.
+  it('says something different in each language, where the two should differ', () => {
+    const keys = [
+      'file.title',
+      'file.choose',
+      'file.change',
+      'file.why',
+      'file.open',
+      'month.totalIncome',
+      'month.totalExpenses',
+      'month.unallocated',
+      'month.showUnplanned',
+      'month.note',
+      'month.previous',
+    ] as const
+
+    for (const key of keys) {
+      expect(translate(key, 'pl'), key).not.toBe(translate(key, 'en'))
     }
   })
 })

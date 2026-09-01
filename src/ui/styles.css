@@ -21,6 +21,10 @@
   --selected: #1b2a4a;
   --selected-text: #ffffff;
   --focus: #b57d0a;
+  /* The month's three figures sit in a well, a shade below the card. */
+  --sunken: #eef2f9;
+  --alarm: #a3231b;
+  --alarm-ground: #fbeceb;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -34,6 +38,9 @@
     --selected: #e8edf8;
     --selected-text: #17203a;
     --focus: #f0b544;
+    --sunken: #121b2e;
+    --alarm: #ffb4ab;
+    --alarm-ground: #3a1a17;
   }
 }
 
@@ -96,8 +103,13 @@ body {
   color: var(--muted);
   font: inherit;
   font-size: 0.9375rem;
-  /* Comfortably tappable on a phone without becoming a slab on a desktop. */
-  padding: 0.4375rem 0.875rem;
+  /* 44px tall, matching the month arrows: the smallest comfortable tap target
+   * on a phone. Set as a height rather than inferred from padding, so the sum
+   * cannot quietly drift below it when the type scale changes. */
+  min-height: 2.75rem;
+  display: inline-flex;
+  align-items: center;
+  padding-inline: 0.9375rem;
   cursor: pointer;
 }
 
@@ -112,7 +124,7 @@ body {
   outline-offset: 2px;
 }
 
-/* The placeholder card ---------------------------------------------------- */
+/* The card that holds whichever screen is open ---------------------------- */
 
 .card {
   background: var(--surface);
@@ -120,36 +132,313 @@ body {
   border-radius: 0.875rem;
   padding: clamp(1.125rem, 5vw, 1.75rem);
   display: grid;
-  gap: 1.5rem;
+  gap: 1.25rem;
 }
 
-.figure {
+/* Picking the file -------------------------------------------------------- */
+
+.pick {
   display: grid;
-  gap: 0.25rem;
+  gap: 0.875rem;
+  justify-items: start;
 }
 
-.figure__label {
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-
-.figure__value {
-  font-size: clamp(1.75rem, 9vw, 2.375rem);
-  font-weight: 600;
-  line-height: 1.15;
-  letter-spacing: -0.02em;
-  /* A budget is read as a column of figures, so the digits line up. */
-  font-variant-numeric: tabular-nums;
-}
-
-.explanation {
+.pick__title {
   margin: 0;
-  padding-top: 0.25rem;
-  border-top: 1px solid var(--line);
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.pick__why {
+  margin: 0;
   color: var(--muted);
   font-size: 0.9375rem;
   text-wrap: pretty;
+}
+
+.problem {
+  margin: 0;
+  padding: 0.625rem 0.75rem;
+  border-radius: 0.5rem;
+  background: var(--alarm-ground);
+  color: var(--alarm);
+  font-size: 0.9375rem;
+  text-wrap: pretty;
+}
+
+.pick__button {
+  appearance: none;
+  border: 0;
+  border-radius: 0.625rem;
+  background: var(--selected);
+  color: var(--selected-text);
+  font: inherit;
+  font-weight: 500;
+  min-height: 2.75rem;
+  padding-inline: 1.25rem;
+  cursor: pointer;
+}
+
+.pick__button:focus-visible,
+.reveal:focus-visible,
+.months__step:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+/* Moving between months --------------------------------------------------- */
+
+.months {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.months__label {
+  margin: 0;
+  font-size: clamp(1.125rem, 5vw, 1.75rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  text-align: center;
+  overflow-wrap: anywhere;
+  /* Takes the slack so the two arrows stay pinned to the edges. */
+  flex: 1;
+  min-width: 0;
+}
+
+.months__step {
+  appearance: none;
+  flex: none;
+  border: 1px solid var(--line);
+  border-radius: 0.625rem;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 1.25rem;
+  line-height: 1;
+  /* 44px square: the smallest comfortable tap target on a phone. */
+  width: 2.75rem;
+  height: 2.75rem;
+  cursor: pointer;
+}
+
+/* The three figures that describe the month ------------------------------- */
+
+.totals {
+  margin: 0;
+  display: grid;
+  gap: 0.375rem;
+  padding: 0.875rem 1rem;
+  border-radius: 0.75rem;
+  background: var(--sunken);
+}
+
+.totals__row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.totals__label {
+  color: var(--muted);
+  font-size: 0.9375rem;
+  min-width: 0;
+  /* `Nierozdysponowane` is one seventeen-character word. Without this it cannot
+   * break, and on a 360px phone it pushes the figure off the edge. */
+  overflow-wrap: anywhere;
+}
+
+.totals__value {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.totals__row--lead {
+  padding-top: 0.375rem;
+  border-top: 1px solid var(--line);
+}
+
+.totals__row--lead .totals__label {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.totals__row--lead .totals__value {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.totals__value--negative {
+  color: var(--alarm);
+}
+
+.notice {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9375rem;
+}
+
+/* A group and its lines --------------------------------------------------- */
+
+.group {
+  display: grid;
+  gap: 0.375rem;
+}
+
+.group__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding-bottom: 0.375rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.group__name {
+  margin: 0;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  /* An operator-typed name can be long; it wraps rather than pushing the
+   * subtotal off the edge of the phone. */
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.group__subtotal {
+  flex: none;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.lines {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+}
+
+.line {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-block: 0.375rem;
+}
+
+.line + .line {
+  border-top: 1px solid color-mix(in srgb, var(--line) 55%, transparent);
+}
+
+.line__name {
+  overflow-wrap: anywhere;
+}
+
+.line__what {
+  display: grid;
+  gap: 0.125rem;
+  min-width: 0;
+}
+
+.line__amount {
+  /* Shrinks rather than pushing the page sideways: only the figure itself
+   * refuses to break, and an arithmetic expression wraps beneath it. */
+  flex: 0 1 auto;
+  min-width: 0;
+  display: grid;
+  justify-items: end;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.line__figure {
+  white-space: nowrap;
+}
+
+/* The arithmetic the operator typed, kept under its own result. */
+.line__typed {
+  color: var(--muted);
+  font-size: 0.75rem;
+  overflow-wrap: anywhere;
+}
+
+/* A note belongs to this line in this month. Operator-typed, shown in full. */
+.line__note {
+  color: var(--muted);
+  font-size: 0.8125rem;
+  overflow-wrap: anywhere;
+}
+
+.line__noteLabel {
+  margin-right: 0.375rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--focus);
+}
+
+.line--unplanned .line__name,
+.line--unplanned .line__amount {
+  color: var(--muted);
+}
+
+/* Which file is open. The operator's own filename, shown as they named it. */
+.opened {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+
+.opened__label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.opened__name {
+  overflow-wrap: anywhere;
+}
+
+/* Revealing what is hidden ------------------------------------------------ */
+
+.reveal {
+  appearance: none;
+  justify-self: start;
+  border: 1px solid var(--line);
+  border-radius: 0.625rem;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.9375rem;
+  /* Also 44px: this class carries the only way back to the file picker. */
+  min-height: 2.75rem;
+  padding-inline: 0.875rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.reveal__count {
+  font-variant-numeric: tabular-nums;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--selected-text);
+  background: var(--selected);
+  border-radius: 999px;
+  padding: 0.0625rem 0.4375rem;
 }
