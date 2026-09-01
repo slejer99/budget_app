@@ -9,12 +9,12 @@ are the risky parts, not the placeholder.
 
 **Blocked by:** None — can start immediately.
 
-**Status:** ready-for-human
+**Status:** resolved
 
 - [x] Builds with Node pinned to one LTS version, with the exact version recorded in the repo
 - [x] Published as static files to GitHub Pages from a public repository
-- [ ] Installs to the Windows Start menu from Edge or Chrome and opens in its own window
-- [ ] Installs to the Android home screen and opens as an app
+- [x] Installs to the Windows Start menu from Edge or Chrome and opens in its own window
+- [x] Installs to the Android home screen and opens as an app
 - [x] Works in portrait on a phone with no horizontal scrolling
 - [x] Interface language switch offers Polish and English and takes effect immediately
 - [x] Language choice persists across restarts, stored in the browser for now — ticket 02 moves it into the budget document
@@ -48,11 +48,6 @@ Done and verified:
   `CLAUDE.md` now names them: operator-typed text, the language names on the switch, and the
   name the installed app carries — no browser can switch a manifest at runtime.
 
-Left, in order:
-
-1. **Install on Windows**, then **install on Android**, from
-   <https://slejer99.github.io/budget_app/>.
-
 **2026-08-31, later — it is live.** The operator set Pages to build from GitHub Actions and
 the run went green: Node 24.19.0 from `.nvmrc`, fifteen tests, a clean build, published.
 <https://slejer99.github.io/budget_app/> serves the page, the manifest (as
@@ -66,3 +61,15 @@ Also done here, beyond the checklist: the workbook, the three extracted CSVs and
 `05-data-inventory.md` were removed from git and from its history before the first push,
 because the repository is public and ADR-0001 says the operator's financial data never
 reaches the host. They remain on the desktop, so the ticket-03 importer still has them.
+
+**2026-09-01 — installed on both devices. Ticket closed.**
+
+The operator installed it from <https://slejer99.github.io/budget_app/> to the Windows Start
+menu and to the Android home screen, and checked the month label, the amount and portrait
+layout on the phone. All eleven boxes are ticked.
+
+One thing worth recording, because it will look like a bug to whoever reads this next: the
+app showed `Wrzesień 2026` on the day of the install, where the note above says
+`Sierpień 2026`. Both are correct — the placeholder shows the real current month, and the
+month had turned over. `Wrzesień`, not `Wrześnie` or `Września`, is the stand-alone form the
+ticket asked for.
